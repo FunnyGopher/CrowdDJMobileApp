@@ -70,16 +70,16 @@ public class HomeActivity extends Activity {
 
     private void play() {
         String ip = getIpAddress();
-        new HTTPGetTask().execute("http://" + ip + ":8081/play");
+        new HTTPGetTask().execute("http://" + ip + ":8081/playback/?command=play");
     }
 
     private void pause() {
         String ip = getIpAddress();
-        new HTTPGetTask().execute("http://" + ip + ":8081/pause");
+        new HTTPGetTask().execute("http://" + ip + ":8081/playback/?command=pause");
     }
 
     private void stop() {
         String ip = getIpAddress();
-        new HTTPGetTask().execute("http://" + ip + ":8081/stop");
+        new HTTPGetTask().execute("http://" + ip + ":8081/playback/?command=stop");
     }
 }
