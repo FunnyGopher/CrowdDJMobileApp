@@ -1,4 +1,4 @@
-package com.github.funnygopher.crowddjmobileapp.activity;
+package com.github.funnygopher.crowddjmobileapp.activities;
 
 import android.app.Activity;
 import android.content.Context;
@@ -15,7 +15,6 @@ import com.github.funnygopher.crowddjmobileapp.SessionManager;
 public class LoginActivity extends Activity {
 
     SessionManager sessionManager;
-
     EditText txtName, txtIpAddress;
     Button bLogin;
 
@@ -43,7 +42,7 @@ public class LoginActivity extends Activity {
 
                     sessionManager.createLoginSession(name, ipAddress, phoneNumber);
 
-                    Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), PlaylistActivity.class);
                     startActivity(intent);
                     finish();
                 }

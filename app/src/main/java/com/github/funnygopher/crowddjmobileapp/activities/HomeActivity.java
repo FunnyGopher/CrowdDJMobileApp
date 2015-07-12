@@ -1,4 +1,4 @@
-package com.github.funnygopher.crowddjmobileapp.activity;
+package com.github.funnygopher.crowddjmobileapp.activities;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -13,7 +13,6 @@ import com.github.funnygopher.crowddjmobileapp.tasks.HTTPGetTask;
 public class HomeActivity extends Activity {
 
     SessionManager sessionManager;
-
     Button bPlay, bPause, bStop, bLogout;
 
     @Override

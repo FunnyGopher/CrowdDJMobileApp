@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
-import com.github.funnygopher.crowddjmobileapp.activity.LoginActivity;
+import com.github.funnygopher.crowddjmobileapp.activities.LoginActivity;
 
 import java.util.HashMap;
 
