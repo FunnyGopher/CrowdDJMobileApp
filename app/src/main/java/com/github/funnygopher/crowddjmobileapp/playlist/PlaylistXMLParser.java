@@ -1,4 +1,4 @@
-package com.github.funnygopher.crowddjmobileapp.activities;
+package com.github.funnygopher.crowddjmobileapp.playlist;
 
 import android.util.Xml;
 

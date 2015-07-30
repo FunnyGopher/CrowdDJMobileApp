@@ -1,4 +1,4 @@
-package com.github.funnygopher.crowddjmobileapp.activities;
+package com.github.funnygopher.crowddjmobileapp.playlist;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -11,7 +11,6 @@ import android.widget.Toast;
 import com.github.funnygopher.crowddjmobileapp.R;
 import com.github.funnygopher.crowddjmobileapp.SessionManager;
 import com.github.funnygopher.crowddjmobileapp.Song;
-import com.github.funnygopher.crowddjmobileapp.tasks.HTTPGetTask;
 
 public class PlaylistActivity extends Activity {
 
@@ -70,6 +69,6 @@ public class PlaylistActivity extends Activity {
 
     private void vote(Song song) {
         String ip = getIpAddress();
-        new HTTPGetTask().execute("http://" + ip + ":8081/playlist/?vote=" + song.uri);
+        new VoteTask(ip, song.uri).execute();
     }
 }
