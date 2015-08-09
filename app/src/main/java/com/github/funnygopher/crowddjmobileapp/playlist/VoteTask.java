@@ -23,7 +23,7 @@ public class VoteTask  extends AsyncTask<Void, Void, Void> {
     private String songURI;
 
     public VoteTask(String ipAddress, String songURI) {
-        voteAddress = "http://" + ipAddress + ":8081/playlist/";
+        voteAddress = "http://" + ipAddress + "/playlist/";
         this.songURI = songURI;
     }
 

@@ -2,6 +2,7 @@ package com.github.funnygopher.crowddjmobileapp.playlist;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -12,7 +13,7 @@ import com.github.funnygopher.crowddjmobileapp.R;
 import com.github.funnygopher.crowddjmobileapp.SessionManager;
 import com.github.funnygopher.crowddjmobileapp.Song;
 
-public class PlaylistActivity extends Activity {
+public class PlaylistActivity extends AppCompatActivity {
 
     SessionManager sessionManager;
     ListView lvPlaylist;
@@ -35,7 +36,7 @@ public class PlaylistActivity extends Activity {
         if(sessionManager.isLoggedIn()) {
             setContentView(R.layout.activity_playlist);
 
-            playlistURL = "http://" + getIpAddress() + ":8081/playlist/";
+            playlistURL = "http://" + getIpAddress() + "/playlist/";
 
             lvPlaylist = (ListView) findViewById(R.id.lvPlaylist);
             playlistAdapter = new PlaylistAdapter(playlistURL);
