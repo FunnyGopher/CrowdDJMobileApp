@@ -38,7 +38,7 @@ public class AnybodyHomeTask extends AsyncTask<Void, Void, Boolean> {
 
     @Override
     protected void onPreExecute() {
-        dialog.setMessage("Checking IP address...");
+        dialog.setMessage("Listening for bumpin' music...");
         dialog.show();
     }
 
