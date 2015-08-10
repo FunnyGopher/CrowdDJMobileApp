@@ -70,6 +70,7 @@ public class PlaylistActivity extends AppCompatActivity {
 
     private void vote(Song song) {
         String ip = getIpAddress();
-        new VoteTask(ip, song.uri).execute();
+        String name = sessionManager.getUserDetails().get(SessionManager.KEY_NAME);
+        new VoteTask(ip, name, song.uri).execute();
     }
 }

@@ -20,10 +20,12 @@ import java.util.List;
 public class VoteTask  extends AsyncTask<Void, Void, Void> {
 
     private String voteAddress;
+    private String user;
     private String songURI;
 
-    public VoteTask(String ipAddress, String songURI) {
+    public VoteTask(String ipAddress, String user, String songURI) {
         voteAddress = "http://" + ipAddress + "/playlist/";
+        this.user = user;
         this.songURI = songURI;
     }
 
@@ -34,6 +36,7 @@ public class VoteTask  extends AsyncTask<Void, Void, Void> {
 
         List<NameValuePair> parameters = new ArrayList<NameValuePair>(1);
         parameters.add(new BasicNameValuePair("vote", songURI));
+        parameters.add(new BasicNameValuePair("user", user));
 
         try {
             httpPost.setEntity(new UrlEncodedFormEntity(parameters));
