@@ -58,12 +58,14 @@ public class SessionManager {
     // Removes the user's data from the preferences
     public void logoutUser() {
         String name = pref.getString(KEY_NAME, "");
+        String ipAddress = pref.getString(KEY_IP_ADDRESS, "");
 
         editor.clear();
         editor.commit();
 
         Intent intent = new Intent(context, LoginActivity.class);
         intent.putExtra("name", name);
+        intent.putExtra("ip address", ipAddress);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);

@@ -14,7 +14,10 @@ import android.support.v7.widget.AppCompatButton;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewManager;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.github.funnygopher.crowddjmobileapp.R;
 import com.github.funnygopher.crowddjmobileapp.SessionManager;
@@ -23,10 +26,11 @@ import com.github.funnygopher.crowddjmobileapp.playlist.PlaylistActivity;
 public class LoginActivity extends AppCompatActivity implements AnybodyHomeable, CanLocateServer {
 
     SessionManager sessionManager;
-    EditText input_name, input_address1, input_address2;
+    EditText input_name, input_address;
     AppCompatButton btn_join;
 
     private String ipAddress;
+    private boolean withQRCode = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,16 +40,34 @@ public class LoginActivity extends AppCompatActivity implements AnybodyHomeable,
         sessionManager = new SessionManager(getApplicationContext());
 
         input_name = (EditText) findViewById(R.id.input_name);
-        input_address1 = (EditText) findViewById(R.id.input_address1);
-        input_address2 = (EditText) findViewById(R.id.input_address2);
+        input_address = (EditText) findViewById(R.id.input_address);
         btn_join = (AppCompatButton) findViewById(R.id.btn_join);
+        //final LinearLayout layout = (LinearLayout) findViewById(R.id.linearLayout);
+
+        Intent intent = getIntent();
+        if(intent.getDataString() != null) {
+            String dataString = intent.getDataString();
+            ipAddress = dataString.replace("crowddjmobileapp://", "");
+            ((ViewManager)input_address.getParent()).removeView(input_address);
+            withQRCode = true;
+        }
+
+        Bundle extras = intent.getExtras();
+        if(extras != null && !extras.isEmpty()) {
+            String name = extras.getString("name", "");
+            String ipAddress = extras.getString("ip address", "");
+            input_name.setText(name);
+            input_address.setText(ipAddress);
+        }
 
         btn_join.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String name = input_name.getText().toString();
-                String hashedIp = input_address1.getText().toString();
-                String hashedPort = input_address2.getText().toString();
+
+                if(!withQRCode) {
+                    ipAddress = input_address.getText().toString();
+                }
 
                 ConnectivityManager connManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
                 NetworkInfo wifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
@@ -60,26 +82,23 @@ public class LoginActivity extends AppCompatActivity implements AnybodyHomeable,
                     return;
                 }
 
-                if(hashedIp.length() <= 0 || hashedPort.length() <= 0) {
+                if (ipAddress.trim().length() <= 0) {
                     showMessage("Missing Server Code", "You have to tell me what server to connect to!");
                     return;
                 }
 
-                ipAddress = unhashServerCode(hashedIp, hashedPort);
+                /*
+                if(hashedIp.length() <= 0 || hashedPort.length() <= 0) {
+                    showMessage("Missing Server Code", "You have to tell me what server to connect to!");
+                    return;
+                }
+                */
+
+                //ipAddress = unhashServerCode(hashedIp, hashedPort);
                 checkIfAnybodyIsHome(ipAddress);
             }
         });
 
-        Intent intent = getIntent();
-        Bundle extras = intent.getExtras();
-        if(extras != null && !extras.isEmpty()) {
-            String name = extras.getString("name", "");
-            //String hashedIp = extras.getString("hashedIp", "");
-            //String hashedPort = extras.getString("hashedPort", "");
-            input_name.setText(name);
-            //input_address1.setText(hashedIp);
-            //input_address2.setText(hashedPort);
-        }
     }
 
     private String unhashServerCode(String hashedIp, String hashedPort) {

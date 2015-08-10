@@ -59,8 +59,6 @@ public class PlaylistActivity extends AppCompatActivity {
                     finish();
                 }
             });
-
-
         }
     }
 
