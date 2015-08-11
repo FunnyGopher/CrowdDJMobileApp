@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primary">#616161</color>
-    <color name="primary_dark">#424242</color>
-    <color name="primary_darker">#212121</color>
+    <color name="primary">#C8C8C8</color>
+    <color name="primary_dark">#999999</color>
+    <color name="primary_darker">#777777</color>
 
-    <color name="accent">#FFEA00</color>
+    <color name="accent">#333333</color>
 
     <color name="black">#000000</color>
     <color name="jet">#222222</color>
