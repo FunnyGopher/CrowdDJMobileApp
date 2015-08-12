@@ -20,11 +20,13 @@ import java.util.List;
 public class VoteTask  extends AsyncTask<Void, Void, Void> {
 
     private String voteAddress;
+    private String id;
     private String user;
     private String songURI;
 
-    public VoteTask(String ipAddress, String user, String songURI) {
+    public VoteTask(String ipAddress, String id, String user, String songURI) {
         voteAddress = "http://" + ipAddress + "/playlist/";
+        this.id = id;
         this.user = user;
         this.songURI = songURI;
     }
@@ -36,6 +38,7 @@ public class VoteTask  extends AsyncTask<Void, Void, Void> {
 
         List<NameValuePair> parameters = new ArrayList<NameValuePair>(1);
         parameters.add(new BasicNameValuePair("vote", songURI));
+        parameters.add(new BasicNameValuePair("id", id));
         parameters.add(new BasicNameValuePair("user", user));
 
         try {
