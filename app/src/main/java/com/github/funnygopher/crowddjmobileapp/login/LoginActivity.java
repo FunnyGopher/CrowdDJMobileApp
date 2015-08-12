@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewManager;
 import android.widget.EditText;
 
+import com.github.funnygopher.crowddjmobileapp.HttpRequest;
 import com.github.funnygopher.crowddjmobileapp.R;
 import com.github.funnygopher.crowddjmobileapp.playlist.PlaylistActivity;
 

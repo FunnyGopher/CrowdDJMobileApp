@@ -21,7 +21,7 @@ public class SessionManager {
     // The user data keys
     public static final String KEY_ID = "id";
     public static final String KEY_NAME = "name";
-    public static final String KEY_SERVER_IP_ADDRESS = "ip address";
+    public static final String KEY_SERVER_IP_ADDRESS = "ip_address";
 
     public SessionManager(Context context) {
         this.context = context;
@@ -65,7 +65,7 @@ public class SessionManager {
 
         Intent intent = new Intent(context, LoginActivity.class);
         intent.putExtra("name", name);
-        intent.putExtra("ip address", ipAddress);
+        intent.putExtra("ip_address", ipAddress);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);

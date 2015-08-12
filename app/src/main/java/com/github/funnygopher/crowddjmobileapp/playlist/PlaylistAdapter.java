@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.github.funnygopher.crowddjmobileapp.HttpRequest;
 import com.github.funnygopher.crowddjmobileapp.R;
 import com.github.funnygopher.crowddjmobileapp.Song;
 
@@ -18,8 +19,10 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.xmlpull.v1.XmlPullParserException;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -130,10 +133,9 @@ public class PlaylistAdapter extends BaseAdapter {
     // an input stream.
     private InputStream downloadUrl(String urlString) throws IOException {
         try {
-            HttpClient client = new DefaultHttpClient();
-            HttpResponse response = client.execute(new HttpGet(urlString));
-            InputStream content = response.getEntity().getContent();
-            return content;
+            HttpRequest req = new HttpRequest(HttpRequest.GET, urlString);
+            String response = req.sendAndGetResponse();
+            return new ByteArrayInputStream(response.getBytes());
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -8,9 +8,13 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.github.funnygopher.crowddjmobileapp.HttpRequest;
 import com.github.funnygopher.crowddjmobileapp.R;
 import com.github.funnygopher.crowddjmobileapp.login.SessionManager;
 import com.github.funnygopher.crowddjmobileapp.Song;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class PlaylistActivity extends AppCompatActivity {
 
@@ -66,9 +70,10 @@ public class PlaylistActivity extends AppCompatActivity {
     }
 
     private void vote(Song song) {
-        String ip = getIpAddress();
         String id = sessionManager.getUserDetails().get(SessionManager.KEY_ID);
         String name = sessionManager.getUserDetails().get(SessionManager.KEY_NAME);
-        new VoteTask(ip, id, name, song.uri).execute();
+
+        VoteTask task = new VoteTask(playlistURL, song.uri, id, name);
+        task.execute();
     }
 }
