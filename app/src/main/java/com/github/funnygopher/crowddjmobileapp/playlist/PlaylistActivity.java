@@ -1,6 +1,5 @@
 package com.github.funnygopher.crowddjmobileapp.playlist;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -9,9 +8,13 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.github.funnygopher.crowddjmobileapp.HttpRequest;
 import com.github.funnygopher.crowddjmobileapp.R;
-import com.github.funnygopher.crowddjmobileapp.SessionManager;
+import com.github.funnygopher.crowddjmobileapp.login.SessionManager;
 import com.github.funnygopher.crowddjmobileapp.Song;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class PlaylistActivity extends AppCompatActivity {
 
@@ -63,12 +66,14 @@ public class PlaylistActivity extends AppCompatActivity {
     }
 
     private String getIpAddress() {
-        return sessionManager.getUserDetails().get(SessionManager.KEY_IP_ADDRESS);
+        return sessionManager.getUserDetails().get(SessionManager.KEY_SERVER_IP_ADDRESS);
     }
 
     private void vote(Song song) {
-        String ip = getIpAddress();
+        String id = sessionManager.getUserDetails().get(SessionManager.KEY_ID);
         String name = sessionManager.getUserDetails().get(SessionManager.KEY_NAME);
-        new VoteTask(ip, name, song.uri).execute();
+
+        VoteTask task = new VoteTask(playlistURL, song.uri, id, name);
+        task.execute();
     }
 }

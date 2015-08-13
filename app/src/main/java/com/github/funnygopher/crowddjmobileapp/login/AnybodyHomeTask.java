@@ -6,6 +6,8 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.github.funnygopher.crowddjmobileapp.HttpRequest;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -22,7 +24,7 @@ import java.net.SocketTimeoutException;
 
 public class AnybodyHomeTask extends AsyncTask<Void, Void, Boolean> {
 
-    private String ipAddress;
+    private String anybodyHomeAddress;
 
     private Context context;
     private AnybodyHomeable homeable;
@@ -31,7 +33,7 @@ public class AnybodyHomeTask extends AsyncTask<Void, Void, Boolean> {
     public AnybodyHomeTask(Context context, AnybodyHomeable homeable, String ipAddress) {
         this.context = context;
         this.homeable = homeable;
-        this.ipAddress = "http://" + ipAddress + "/anybodyhome/";
+        this.anybodyHomeAddress = "http://" + ipAddress + "/anybodyhome/";
 
         dialog = new ProgressDialog(context);
     }
@@ -57,39 +59,14 @@ public class AnybodyHomeTask extends AsyncTask<Void, Void, Boolean> {
 
     @Override
     protected Boolean doInBackground(Void... params) {
-
-        HttpClient httpClient = new DefaultHttpClient();
-        HttpParams clientParams = httpClient.getParams();
-        HttpConnectionParams.setConnectionTimeout(clientParams, 1000);
-        HttpConnectionParams.setSoTimeout(clientParams, 1000);
-
-        HttpGet httpGet = new HttpGet(ipAddress);
-
         try {
-            HttpResponse response = httpClient.execute(httpGet);
-            InputStream stream = response.getEntity().getContent();
-            String responseText = readString(stream);
-            Log.d("Http Get Response: ", responseText);
+            HttpRequest req = new HttpRequest(HttpRequest.GET, anybodyHomeAddress);
+            String response = req.sendAndGetResponse();
+            Log.d("Http Get Response: ", response);
             return true;
-        } catch (ConnectTimeoutException e) {
-            Log.e("AnybodyHomeTask", "Timeout", e);
-            return false;
         } catch (IOException e) {
             Log.e("LoginActivity", "AnybodyHomeTask", e);
             return false;
         }
-    }
-
-    private String readString(InputStream is) throws IOException {
-        char[] buffer = new char[2048];
-        Reader r = new InputStreamReader(is, "UTF-8");
-        StringBuilder s = new StringBuilder();
-        while (true) {
-            int n = r.read(buffer);
-            if (n < 0)
-                break;
-            s.append(buffer, 0, n);
-        }
-        return s.toString();
     }
 }

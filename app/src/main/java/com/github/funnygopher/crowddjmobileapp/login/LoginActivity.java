@@ -7,23 +7,21 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.DhcpInfo;
 import android.net.NetworkInfo;
+import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
-import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewManager;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.Toast;
 
+import com.github.funnygopher.crowddjmobileapp.HttpRequest;
 import com.github.funnygopher.crowddjmobileapp.R;
-import com.github.funnygopher.crowddjmobileapp.SessionManager;
 import com.github.funnygopher.crowddjmobileapp.playlist.PlaylistActivity;
 
-public class LoginActivity extends AppCompatActivity implements AnybodyHomeable, CanLocateServer {
+public class LoginActivity extends AppCompatActivity implements AnybodyHomeable {
 
     SessionManager sessionManager;
     EditText input_name, input_address;
@@ -42,7 +40,6 @@ public class LoginActivity extends AppCompatActivity implements AnybodyHomeable,
         input_name = (EditText) findViewById(R.id.input_name);
         input_address = (EditText) findViewById(R.id.input_address);
         btn_join = (AppCompatButton) findViewById(R.id.btn_join);
-        //final LinearLayout layout = (LinearLayout) findViewById(R.id.linearLayout);
 
         Intent intent = getIntent();
         if(intent.getDataString() != null) {
@@ -55,7 +52,7 @@ public class LoginActivity extends AppCompatActivity implements AnybodyHomeable,
         Bundle extras = intent.getExtras();
         if(extras != null && !extras.isEmpty()) {
             String name = extras.getString("name", "");
-            String ipAddress = extras.getString("ip address", "");
+            String ipAddress = extras.getString("ip_address", "");
             input_name.setText(name);
             input_address.setText(ipAddress);
         }
@@ -73,32 +70,23 @@ public class LoginActivity extends AppCompatActivity implements AnybodyHomeable,
                 NetworkInfo wifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 
                 if (!wifi.isConnected()) {
-                    showMessage("No Wifi!", "You must be on the same wifi network as the music player!");
+                    showMessage("No Wifi", "You must be on the same wifi network as the music player!");
                     return;
                 }
 
                 if (name.trim().length() <= 0) {
-                    showMessage("No Name", "Why don't you have a name?");
+                    showMessage("Missing Name", "Why don't you have a name?");
                     return;
                 }
 
                 if (ipAddress.trim().length() <= 0) {
-                    showMessage("Missing Server Code", "You have to tell me what server to connect to!");
+                    showMessage("Missing Player Address", "You have to tell me what server to connect to!");
                     return;
                 }
 
-                /*
-                if(hashedIp.length() <= 0 || hashedPort.length() <= 0) {
-                    showMessage("Missing Server Code", "You have to tell me what server to connect to!");
-                    return;
-                }
-                */
-
-                //ipAddress = unhashServerCode(hashedIp, hashedPort);
                 checkIfAnybodyIsHome(ipAddress);
             }
         });
-
     }
 
     private String unhashServerCode(String hashedIp, String hashedPort) {
@@ -131,6 +119,29 @@ public class LoginActivity extends AppCompatActivity implements AnybodyHomeable,
         return ipAddress;
     }
 
+    public void checkIfAnybodyIsHome(String ipAddress) {
+        AnybodyHomeTask anybodyTask = new AnybodyHomeTask(LoginActivity.this, this, ipAddress);
+        anybodyTask.execute();
+    }
+
+    public void nobodyIsHome() {
+        showMessage("Can't Find Player", "I couldn't hear anything playing...");
+    }
+
+    public void somebodyIsHome() {
+        // Get the phone number of the phone the app is running on. This acts as the UUID.
+        WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+        WifiInfo wInfo = wifiManager.getConnectionInfo();
+        String macAddress = wInfo.getMacAddress();
+
+        String name = input_name.getText().toString();
+        sessionManager.createLoginSession(macAddress, name, ipAddress);
+
+        Intent intent = new Intent(LoginActivity.this, PlaylistActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
     private String getBaseAddress() {
         WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
         DhcpInfo dhcpInfo = wifiManager.getDhcpInfo();
@@ -146,7 +157,7 @@ public class LoginActivity extends AppCompatActivity implements AnybodyHomeable,
         return something;
     }
 
-    public void showMessage(String title, String message) {
+    private void showMessage(String title, String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this)
                 .setTitle(title)
                 .setMessage(message)
@@ -159,48 +170,5 @@ public class LoginActivity extends AppCompatActivity implements AnybodyHomeable,
 
         AlertDialog dialog = builder.create();
         dialog.show();
-    }
-
-    public void checkIfAnybodyIsHome(String ipAddress) {
-        //LocateServerTask locateTask = new LocateServerTask(LoginActivity.this, this);
-        //locateTask.execute();
-        AnybodyHomeTask anybodyTask = new AnybodyHomeTask(LoginActivity.this, this, ipAddress);
-        anybodyTask.execute();
-    }
-
-    public void nobodyIsHome() {
-        showMessage("Nobody Was Home", "There wasn't a server at that IP Address!");
-    }
-
-    public void somebodyIsHome() {
-        // Get the phone number of the phone the app is running on. This acts as the UUID.
-        TelephonyManager tMgr = (TelephonyManager) getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
-        String phoneNumber = tMgr.getLine1Number();
-
-        String name = input_name.getText().toString();
-        //String ipAddress = input_address.getText().toString();
-        sessionManager.createLoginSession(name, ipAddress, phoneNumber);
-
-        Intent intent = new Intent(LoginActivity.this, PlaylistActivity.class);
-        startActivity(intent);
-        finish();
-    }
-
-    @Override
-    public void serverLocated(boolean located, String ipAddress) {
-        if(located) {
-            // Get the phone number of the phone the app is running on. This acts as the UUID.
-            TelephonyManager tMgr = (TelephonyManager) getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
-            String phoneNumber = tMgr.getLine1Number();
-
-            String name = input_name.getText().toString();
-            sessionManager.createLoginSession(name, ipAddress, phoneNumber);
-
-            Intent intent = new Intent(LoginActivity.this, PlaylistActivity.class);
-            startActivity(intent);
-            finish();
-        } else {
-            showMessage("Nobody Was Home", "Could not find a server nearby");
-        }
     }
 }
