@@ -58,7 +58,7 @@ public class PlaylistActivity extends AppCompatActivity {
 
     private void vote(Song song) {
         String id = sessionManager.getSessionPreferences().get(SessionManager.KEY_ID);
-        String name = sessionManager.getSessionPreferences().get(SessionManager.KEY_NAME);
+        String name = sessionManager.getUserPreferences().get(SessionManager.KEY_NAME);
 
         VoteTask task = new VoteTask(playlistURL, song.uri, id, name);
         task.execute();
