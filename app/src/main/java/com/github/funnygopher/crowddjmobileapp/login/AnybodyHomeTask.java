@@ -61,11 +61,9 @@ public class AnybodyHomeTask extends AsyncTask<Void, Void, Boolean> {
     protected Boolean doInBackground(Void... params) {
         try {
             HttpRequest req = new HttpRequest(HttpRequest.GET, anybodyHomeAddress);
-            String response = req.sendAndGetResponse();
-            Log.d("Http Get Response: ", response);
+            req.send();
             return true;
         } catch (IOException e) {
-            Log.e("LoginActivity", "AnybodyHomeTask", e);
             return false;
         }
     }

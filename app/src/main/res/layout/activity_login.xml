@@ -9,12 +9,10 @@
     android:paddingLeft="24dp"
     android:paddingRight="24dp">
 
-    <TextView
-        android:text="CrowdDJ"
-        android:textSize="50sp"
-        android:layout_width="wrap_content"
-        android:layout_height="72dp"
-        android:layout_marginBottom="24dp"
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="192dp"
+        android:src="@drawable/logo"
         android:layout_gravity="center_horizontal"/>
 
     <!-- Name Label -->
@@ -28,7 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textCapWords"
-            android:hint="Name" />
+            android:hint="@string/hint_name" />
 
     </android.support.design.widget.TextInputLayout>
 
@@ -43,7 +41,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textCapWords"
-            android:hint="IP Address" />
+            android:hint="@string/hint_address" />
 
     </android.support.design.widget.TextInputLayout>
 
@@ -55,6 +53,6 @@
         android:layout_marginTop="24dp"
         android:layout_marginBottom="24dp"
         android:padding="12dp"
-        android:text="Join"/>
+        android:text="@string/text_button_join"/>
 
 </LinearLayout>
