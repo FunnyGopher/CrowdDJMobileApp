@@ -8,13 +8,9 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.github.funnygopher.crowddjmobileapp.HttpRequest;
 import com.github.funnygopher.crowddjmobileapp.R;
-import com.github.funnygopher.crowddjmobileapp.login.SessionManager;
+import com.github.funnygopher.crowddjmobileapp.SessionManager;
 import com.github.funnygopher.crowddjmobileapp.Song;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class PlaylistActivity extends AppCompatActivity {
 
@@ -27,51 +23,42 @@ public class PlaylistActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_playlist);
+        lvPlaylist = (ListView) findViewById(R.id.lvPlaylist);
 
         sessionManager = new SessionManager(getApplicationContext());
 
-        // If the user hasn't logged in, start the login process
-        if(!sessionManager.isLoggedIn()) {
-            sessionManager.startSessionSetup();
-            finish();
-        }
+        playlistURL = "http://" + getIpAddress() + "/playlist/";
 
-        if(sessionManager.isLoggedIn()) {
-            setContentView(R.layout.activity_playlist);
+        playlistAdapter = new PlaylistAdapter(playlistURL);
+        lvPlaylist.setAdapter(playlistAdapter);
+        lvPlaylist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Song song = playlistAdapter.getItem(position);
+                vote(song);
+                Toast.makeText(getApplicationContext(), "Voted for " + song.title + " Votes: " + String.valueOf(song.votes + 1), Toast.LENGTH_SHORT).show();
+                playlistAdapter.updatePlaylist();
+            }
+        });
 
-            playlistURL = "http://" + getIpAddress() + "/playlist/";
-
-            lvPlaylist = (ListView) findViewById(R.id.lvPlaylist);
-            playlistAdapter = new PlaylistAdapter(playlistURL);
-            lvPlaylist.setAdapter(playlistAdapter);
-            lvPlaylist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Song song = playlistAdapter.getItem(position);
-                    vote(song);
-                    Toast.makeText(getApplicationContext(), "Voted for " + song.title + " Votes: " + String.valueOf(song.votes + 1), Toast.LENGTH_SHORT).show();
-                    playlistAdapter.updatePlaylist();
-                }
-            });
-
-            bLogout = (Button) findViewById(R.id.bLogout);
-            bLogout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    sessionManager.logoutUser();
-                    finish();
-                }
-            });
-        }
+        bLogout = (Button) findViewById(R.id.bLogout);
+        bLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sessionManager.destroySession();
+                finish();
+            }
+        });
     }
 
     private String getIpAddress() {
-        return sessionManager.getUserDetails().get(SessionManager.KEY_SERVER_IP_ADDRESS);
+        return sessionManager.getSessionPreferences().get(SessionManager.KEY_ADDRESS);
     }
 
     private void vote(Song song) {
-        String id = sessionManager.getUserDetails().get(SessionManager.KEY_ID);
-        String name = sessionManager.getUserDetails().get(SessionManager.KEY_NAME);
+        String id = sessionManager.getSessionPreferences().get(SessionManager.KEY_ID);
+        String name = sessionManager.getSessionPreferences().get(SessionManager.KEY_NAME);
 
         VoteTask task = new VoteTask(playlistURL, song.uri, id, name);
         task.execute();

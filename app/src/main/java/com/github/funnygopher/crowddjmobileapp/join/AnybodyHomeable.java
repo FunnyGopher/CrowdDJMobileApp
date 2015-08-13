@@ -1,6 +1,4 @@
-package com.github.funnygopher.crowddjmobileapp.login;
-
-import android.app.Activity;
+package com.github.funnygopher.crowddjmobileapp.join;
 
 public interface AnybodyHomeable {
 

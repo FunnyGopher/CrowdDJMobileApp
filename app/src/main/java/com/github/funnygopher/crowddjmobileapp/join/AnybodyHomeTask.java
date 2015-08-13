@@ -1,26 +1,12 @@
-package com.github.funnygopher.crowddjmobileapp.login;
+package com.github.funnygopher.crowddjmobileapp.join;
 
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.github.funnygopher.crowddjmobileapp.HttpRequest;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.conn.ConnectTimeoutException;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
-
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.net.SocketTimeoutException;
 
 public class AnybodyHomeTask extends AsyncTask<Void, Void, Boolean> {
 
