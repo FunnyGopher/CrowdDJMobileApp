@@ -37,9 +37,6 @@ public class JoinActivity extends AppCompatActivity implements AnybodyHomeable {
         super.onCreate(savedInstanceState);
 
         sessionManager = new SessionManager(getApplicationContext());
-        if(sessionManager.inSession()) {
-            joinNoValidation();
-        }
 
         setContentView(R.layout.activity_join);
         input_name = (EditText) findViewById(R.id.input_name);
@@ -65,8 +62,14 @@ public class JoinActivity extends AppCompatActivity implements AnybodyHomeable {
         // If the user had a previously saved address
         Bundle extras = intent.getExtras();
         if(extras != null && !extras.isEmpty()) {
-            String address = extras.getString(SessionManager.KEY_ADDRESS, "");
+            address = extras.getString(SessionManager.KEY_ADDRESS, "");
             input_address.setText(address);
+        }
+
+        if(sessionManager.inSession()) {
+            address = sessionManager.getSessionPreferences().get(SessionManager.KEY_ADDRESS);
+            input_address.setText(address);
+            join();
         }
 
         input_name.addTextChangedListener(new TextWatcher() {
@@ -100,11 +103,6 @@ public class JoinActivity extends AppCompatActivity implements AnybodyHomeable {
         }
 
         String address = withQRCode ? this.address : input_address.getText().toString();
-        checkIfAnybodyIsHome(address);
-    }
-
-    private void joinNoValidation() {
-        String address = sessionManager.getSessionPreferences().get(SessionManager.KEY_ADDRESS);
         checkIfAnybodyIsHome(address);
     }
 

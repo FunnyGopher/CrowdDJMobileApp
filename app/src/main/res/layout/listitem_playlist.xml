@@ -1,35 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="72dp" >
 
-    <!--ImageView
-        android:id="@+id/albumArt"
+    <ImageView
+        android:id="@+id/img_cover_art"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/-->
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:src="@drawable/cover_art_square"/>
 
     <TextView
         android:id="@+id/txtTitle"
-        android:text="Super Cool Song"
-        android:textSize="16sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="23dp"
-        android:layout_marginStart="23dp"
-        android:layout_marginTop="10dp"/>
-        <!--android:layout_toRightOf="@+id/albumArt"
-        android:layout_toEndOf="@+id/albumArt" />-->
+        android:text="Super Cool Song"
+        android:textSize="16sp"
+        android:textStyle="normal"
+        android:fontFamily="Roboto"
+        android:maxLength="23"
+        android:textColor="@color/primary_darker"
+        android:paddingLeft="72dp"
+        android:paddingTop="15dp"/>
 
     <TextView
         android:id="@+id/txtArtist"
         android:text="Really Hip Artist"
+        android:textSize="14sp"
+        android:textStyle="normal"
+        android:fontFamily="Roboto"
+        android:textColor="@color/primary_dark"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/txtTitle"
-        android:layout_alignLeft="@+id/txtTitle"/>
+        android:paddingBottom="15dp"
+        android:paddingLeft="72dp"
+        android:layout_below="@+id/txtTitle"/>
 
+    <TextView
+        android:id="@+id/txtVotes"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="15dp"
+        android:paddingRight="16dp"
+        android:gravity="end"
+        android:text="0 votes"
+        android:textSize="14sp"
+        android:textColor="@color/primary_dark"/>
 
 </RelativeLayout>

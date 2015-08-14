@@ -1,12 +1,16 @@
 package com.github.funnygopher.crowddjmobileapp.playlist;
 
 import android.content.Context;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.OvalShape;
+import android.graphics.drawable.shapes.Shape;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.github.funnygopher.crowddjmobileapp.HttpRequest;
@@ -59,11 +63,15 @@ public class PlaylistAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.listitem_playlist, parent, false);
         }
 
+        ImageView coverArt = (ImageView) convertView.findViewById(R.id.img_cover_art);
         TextView title = (TextView) convertView.findViewById(R.id.txtTitle);
         TextView artist = (TextView) convertView.findViewById(R.id.txtArtist);
+        TextView votes = (TextView) convertView.findViewById(R.id.txtVotes);
+
         Song song = playlist.get(position);
         title.setText(song.title);
         artist.setText(song.artist);
+        votes.setText(song.votes + " votes");
 
         return convertView;
     }
