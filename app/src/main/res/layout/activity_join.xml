@@ -15,7 +15,6 @@
         android:src="@drawable/logo"
         android:layout_gravity="center_horizontal"/>
 
-
     <!-- Name Label -->
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
@@ -24,6 +23,7 @@
         android:layout_marginBottom="8dp">
 
         <EditText android:id="@+id/input_name"
+            android:theme="@style/AppTheme.EditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textCapWords"
@@ -39,6 +39,7 @@
         android:layout_marginBottom="8dp">
 
         <EditText android:id="@+id/input_address"
+            android:theme="@style/AppTheme.EditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textCapWords"
@@ -48,12 +49,13 @@
 
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/btn_join"
+        android:theme="@style/AppTheme.Button"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
         android:layout_marginTop="24dp"
         android:layout_marginBottom="24dp"
         android:padding="12dp"
+        android:gravity="center_horizontal"
         android:text="@string/text_button_join"/>
 
 </LinearLayout>

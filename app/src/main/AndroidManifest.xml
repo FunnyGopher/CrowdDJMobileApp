@@ -16,7 +16,7 @@
         <!-- Join -->
         <activity
             android:name=".join.JoinActivity"
-            android:theme="@style/AppTheme.Dark.NoActionBar"
+            android:theme="@style/AppTheme.NoActionBar"
             android:label="CrowdDJ">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -33,7 +33,7 @@
         <!-- Playlist -->
         <activity
             android:name=".playlist.PlaylistActivity"
-            android:theme="@style/AppTheme.Dark.NoActionBar"
+            android:theme="@style/AppTheme"
             android:label="Playlist"
             android:excludeFromRecents="true">
             <!--<intent-filter>

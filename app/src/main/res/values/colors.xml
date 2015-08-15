@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primary">#C8C8C8</color>
-    <color name="primary_dark">#999999</color>
-    <color name="primary_darker">#777777</color>
+    <color name="action_bar">@color/accent</color>
+    <color name="status_bar">#212121</color>
+
+    <color name="window_background">#C8C8C8</color>
+
+    <color name="grey">#9E9E9E</color>
+    <color name="dark_grey">#757575</color>
+    <color name="darker_grey">#616161</color>
 
     <color name="accent">#333333</color>
-
-    <color name="black">#000000</color>
-    <color name="white">#FFFFFF</color>
 </resources>

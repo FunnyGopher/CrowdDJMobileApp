@@ -6,7 +6,6 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="com.github.funnygopher.crowddjmobileapp.playlist.PlaylistActivity">
 
-
     <ListView
         android:id="@+id/lvPlaylist"
         android:layout_width="wrap_content"
@@ -14,14 +13,17 @@
         android:layout_alignParentTop="true"
         android:layout_above="@+id/bLogout"/>
 
-
-    <Button
+    <android.support.v7.widget.AppCompatButton
         android:id="@+id/bLogout"
         android:text="Leave"
-        android:layout_width="250dp"
+        android:theme="@style/AppTheme.Button"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="24dp"
+        android:padding="12dp"
+        android:gravity="center_horizontal"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
         android:layout_alignParentBottom="true"/>
 
 </RelativeLayout>
