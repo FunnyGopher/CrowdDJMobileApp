@@ -59,9 +59,11 @@ public class PlaylistXMLParser {
 
             String name = parser.getName();
             if(name.equals("title")) {
-                title = readTag(parser, "title");
+                String tag = readTag(parser, "title");
+                title = tag.equals("null") ? "" : tag;
             } else if (name.equals("artist")) {
-                artist = readTag(parser, "artist");
+                String tag = readTag(parser, "artist");
+                artist = tag.equals("null") ? "" : tag;
             } else if (name.equals("uri")) {
                 uri = readTag(parser, "uri");
             } else if (name.equals("votes")) {

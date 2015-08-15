@@ -1,9 +1,6 @@
 package com.github.funnygopher.crowddjmobileapp.playlist;
 
 import android.content.Context;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.OvalShape;
-import android.graphics.drawable.shapes.Shape;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,28 +14,26 @@ import com.github.funnygopher.crowddjmobileapp.HttpRequest;
 import com.github.funnygopher.crowddjmobileapp.R;
 import com.github.funnygopher.crowddjmobileapp.Song;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class PlaylistAdapter extends BaseAdapter {
 
-    public final String PLAYLIST_URL;
-    List<Song> playlist = new ArrayList<Song>();
+    private final String PLAYLIST_URL;
+    private List<Song> playlist = new ArrayList<Song>();
+    private int sortMode;
 
     public PlaylistAdapter(String playlistURL) {
         this.PLAYLIST_URL = playlistURL;
-        updatePlaylist();
-
+        sortMode = 0;
+        fetchPlaylist();
     }
 
     @Override
@@ -76,31 +71,54 @@ public class PlaylistAdapter extends BaseAdapter {
         return convertView;
     }
 
-    private List<Song> getTestSongs() {
-        List<Song> playlist = new ArrayList<Song>();
-
-        playlist.add(new Song("Let It Be (feat. Veela)", "Blackmill", "D%3A%5CUsers%5CKyle%5CMusic%5CBlackmill%5CBlackmill%20-%20Miracle%5C03%20Let%20It%20Be%20%28feat.%20Veela%29.mp3", 1));
-        playlist.add(new Song("Embrace", "Blackmill", "D%3A%5CUsers%5CKyle%5CMusic%5CBlackmill%5CBlackmill%20-%20Miracle%5C04%20Embrace.mp3", 0));
-        playlist.add(new Song("Do I Wanna Know?", "Artic Monkeys", "D%3A%5CUsers%5CKyle%5CMusic%5C%28Singles%29%5CDo%20I%20Wanna%20Know.mp3", 3));
-        return playlist;
+    public void fetchPlaylist() {
+        new GetPlaylistTask(this, sortMode).execute();
+        sort(sortMode);
     }
 
-    public void updatePlaylist() {
-        new DownloadXmlTask(this).execute(PLAYLIST_URL);
+    public void sort(int sortMode) {
+        if(sortMode == PlaylistActivity.SORT_MODE_TITLE) {
+            Collections.sort(playlist, new Comparator<Song>() {
+                @Override
+                public int compare(Song song1, Song song2) {
+                    return song1.title.compareTo(song2.title);
+                }
+            });
+        }
+
+        if(sortMode == PlaylistActivity.SORT_MODE_ARTIST) {
+            Collections.sort(playlist, new Comparator<Song>() {
+                @Override
+                public int compare(Song song1, Song song2) {
+                    if(song1.artist.equals("")) {
+                        return 1;
+                    }
+                    return song1.artist.compareTo(song2.artist);
+                }
+            });
+        }
     }
 
-    private class DownloadXmlTask extends AsyncTask<String, Void, List<Song>> {
+    public void setSortMode(int sortMode) {
+        this.sortMode = sortMode;
+        sort(sortMode);
+        notifyDataSetChanged();
+    }
 
-        PlaylistAdapter adapter;
 
-        public DownloadXmlTask(PlaylistAdapter adapter) {
+    public class GetPlaylistTask extends AsyncTask<Void, Void, List<Song>>{
+
+        private PlaylistAdapter adapter;
+        private int sortMode;
+
+        public GetPlaylistTask(PlaylistAdapter adapter, int sortMode) {
             this.adapter = adapter;
         }
 
         @Override
-        protected List<Song> doInBackground(String... urls) {
+        protected List<Song> doInBackground(Void... voids) {
             try {
-                return getSongsFromXML(urls[0]);
+                return getPlaylist(PLAYLIST_URL);
             } catch (IOException e) {
                 Log.e("CrowdDJ", "Uh-oh", e);
                 return new ArrayList<Song>();
@@ -113,41 +131,40 @@ public class PlaylistAdapter extends BaseAdapter {
         @Override
         protected void onPostExecute(List<Song> songs) {
             playlist = songs;
+            adapter.sort(sortMode);
             adapter.notifyDataSetChanged();
         }
-    }
 
-    // Uploads XML and parses it. Returns a
-    private List<Song> getSongsFromXML(String urlString) throws IOException, XmlPullParserException {
-        InputStream stream = null;
+        // Uploads XML and parses it. Returns a
+        private List<Song> getPlaylist(String address) throws IOException, XmlPullParserException {
+            InputStream stream = null;
 
-        // Instantiate the parser
-        PlaylistXMLParser parser = new PlaylistXMLParser();
-        List<Song> playlist = null;
+            // Instantiate the parser
+            PlaylistXMLParser parser = new PlaylistXMLParser();
+            List<Song> playlist = null;
 
-        try {
-            stream = downloadUrl(urlString);
-            playlist = parser.parse(stream);
-        } finally {
-            if (stream != null) {
-                stream.close();
+            try {
+                stream = getXMLStream(address);
+                playlist = parser.parse(stream);
+            } finally {
+                if (stream != null) {
+                    stream.close();
+                }
             }
+
+            return playlist;
         }
 
-        return playlist;
-    }
+        private InputStream getXMLStream(String address) {
+            try {
+                HttpRequest req = new HttpRequest(HttpRequest.GET, address);
+                String response = req.sendAndGetResponse();
+                return new ByteArrayInputStream(response.getBytes());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
-    // Given a string representation of a URL, sets up a connection and gets
-    // an input stream.
-    private InputStream downloadUrl(String urlString) throws IOException {
-        try {
-            HttpRequest req = new HttpRequest(HttpRequest.GET, urlString);
-            String response = req.sendAndGetResponse();
-            return new ByteArrayInputStream(response.getBytes());
-        } catch (IOException e) {
-            e.printStackTrace();
+            return null;
         }
-
-        return null;
     }
 }

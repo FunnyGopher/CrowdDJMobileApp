@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="action_bar">@color/accent</color>
-    <color name="status_bar">#212121</color>
+    <color name="action_bar">@color/grey</color>
+    <color name="status_bar">@color/dark_grey</color>
 
     <color name="window_background">#C8C8C8</color>
 

@@ -29,7 +29,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class VoteTask extends AsyncTask<String, Void, Void> {
+public class VoteTask extends AsyncTask<Void, Void, Void> {
 
     private String playlistAddress;
     private String songURI, id, name;
@@ -42,7 +42,7 @@ public class VoteTask extends AsyncTask<String, Void, Void> {
     }
 
     @Override
-    protected Void doInBackground(String... params) {
+    protected Void doInBackground(Void... params) {
 
         try {
             HttpRequest req = new HttpRequest(HttpRequest.POST, playlistAddress);

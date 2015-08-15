@@ -19,8 +19,8 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat">
-        <item name="colorPrimary">@color/grey</item>
-        <item name="colorPrimaryDark">@color/dark_grey</item>
+        <item name="colorPrimary">@color/action_bar</item>
+        <item name="colorPrimaryDark">@color/status_bar</item>
 
         <item name="android:windowBackground">@color/window_background</item>
         <item name="android:textColorPrimary">@color/dark_grey</item>

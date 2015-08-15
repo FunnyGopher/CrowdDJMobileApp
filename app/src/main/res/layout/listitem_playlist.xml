@@ -9,34 +9,38 @@
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:paddingStart="16dp"
-        android:paddingEnd="16dp"
+        android:paddingLeft="16dp"
         android:src="@drawable/cover_art_square"/>
 
     <TextView
         android:id="@+id/txtTitle"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Super Cool Song"
         android:textSize="16sp"
         android:textStyle="normal"
-        android:fontFamily="Roboto"
-        android:maxLength="23"
+        android:maxLines="1"
+        android:ellipsize="end"
         android:textColor="@color/dark_grey"
         android:paddingLeft="72dp"
+        android:paddingRight="72dp"
         android:paddingTop="15dp"/>
 
     <TextView
         android:id="@+id/txtArtist"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
         android:text="Really Hip Artist"
         android:textSize="14sp"
         android:textStyle="normal"
-        android:fontFamily="Roboto"
+        android:maxLines="1"
+        android:ellipsize="end"
         android:textColor="@color/grey"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:paddingBottom="15dp"
         android:paddingLeft="72dp"
-        android:layout_below="@+id/txtTitle"/>
+        android:paddingRight="72dp"
+        android:layout_below="@+id/txtTitle"
+        />
 
     <TextView
         android:id="@+id/txtVotes"

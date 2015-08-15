@@ -8,6 +8,10 @@
 
     <!-- Playlist -->
     <string name="title_activity_playlist">Playlist</string>
+    <string-array name="spinner_sort">
+        <item>Title</item>
+        <item>Artist</item>
+    </string-array>
 
     <string name="action_settings">Settings</string>
 </resources>
