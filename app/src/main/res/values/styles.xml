@@ -5,7 +5,13 @@
         <item name="colorControlHighlight">@color/accent</item>
     </style>
 
-    <style name="AppTheme.EditText" parent="Widget.AppCompat.EditText">
+    <style name="AppTheme.TextInputLayout" parent="Widget.Design.TextInputLayout">
+        <item name="colorControlNormal">@color/grey</item>
+        <item name="colorControlActivated">@color/grey</item>
+        <item name="android:textColorHint">@color/grey</item>
+    </style>
+
+    <style name="AppTheme.EditText" patent="Widget.Design.AppCompatEditText">
         <item name="colorControlNormal">@color/grey</item>
         <item name="colorControlActivated">@color/grey</item>
         <item name="android:textColorHint">@color/grey</item>
@@ -28,7 +34,6 @@
         <item name="colorPrimaryDark">@color/dark_grey</item>
 
         <item name="android:windowBackground">@color/window_background</item>
-
         <item name="android:textColorPrimary">@color/dark_grey</item>
 
         <item name="colorButtonNormal">@color/grey</item>
