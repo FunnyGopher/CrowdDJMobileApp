@@ -1,5 +1,6 @@
 package com.github.funnygopher.crowddjmobileapp.playlist;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -63,6 +64,12 @@ public class PlaylistActivity extends AppCompatActivity {
             }
         });
 
+        // Removes the drop shadow if the API is greater than Lollipop
+        if(Build.VERSION.SDK_INT >= 21 ) {
+            View toolbar_dropshadow = findViewById(R.id.toolbar_dropshadow);
+            toolbar_dropshadow.setVisibility(View.INVISIBLE);
+        }
+
         // The listview that holds the playlist
         listview_playlist = (ListView) findViewById(R.id.listview_playlist);
         playlistAdapter = new PlaylistAdapter(playlistURL);
@@ -115,13 +122,5 @@ public class PlaylistActivity extends AppCompatActivity {
 
     private String getIpAddress() {
         return sessionManager.getSessionPreferences().get(SessionManager.KEY_ADDRESS);
-    }
-
-    private void vote(Song song) {
-        String id = sessionManager.getSessionPreferences().get(SessionManager.KEY_ID);
-        String name = sessionManager.getUserPreferences().get(SessionManager.KEY_NAME);
-
-        VoteTask task = new VoteTask(playlistURL, song.uri, id, name);
-        task.execute();
     }
 }

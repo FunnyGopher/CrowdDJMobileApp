@@ -15,18 +15,27 @@
             android:id="@+id/spinner_sort"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
-            android:layout_gravity="end"/>
+            android:layout_gravity="end" />
 
     </android.support.v7.widget.Toolbar>
 
-    <ListView
-        android:id="@+id/listview_playlist"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         android:layout_below="@+id/toolbar_playlist"
-        android:layout_above="@+id/btn_leave"/>
+        android:layout_above="@+id/btn_leave">
+
+        <ListView
+            android:id="@+id/listview_playlist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <View
+            android:id="@+id/toolbar_dropshadow"
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:background="@drawable/toolbar_dropshadow"/>
+    </FrameLayout>
 
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/btn_leave"

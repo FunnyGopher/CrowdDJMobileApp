@@ -113,6 +113,7 @@ public class PlaylistAdapter extends BaseAdapter {
 
         public GetPlaylistTask(PlaylistAdapter adapter, int sortMode) {
             this.adapter = adapter;
+            this.sortMode = sortMode;
         }
 
         @Override
@@ -131,7 +132,7 @@ public class PlaylistAdapter extends BaseAdapter {
         @Override
         protected void onPostExecute(List<Song> songs) {
             playlist = songs;
-            adapter.sort(sortMode);
+            adapter.sort(this.sortMode);
             adapter.notifyDataSetChanged();
         }
 

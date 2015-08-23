@@ -11,6 +11,10 @@
         <item name="android:textColorHint">@color/grey</item>
     </style>
 
+    <style name="MyViewArea">
+        <item name="android:foreground">?android:windowContentOverlay</item>
+    </style>
+
     <style name="AppTheme.EditText" patent="Widget.Design.AppCompatEditText">
         <item name="colorControlNormal">@color/grey</item>
         <item name="colorControlActivated">@color/grey</item>
